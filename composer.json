@@ -1,0 +1,16 @@
+{
+    "name": "sumonseleim/php7ecom",
+    "description": "A basic ecommerce website",
+    "type": "project",
+    "license": "MIT",
+    "authors": [{
+        "name": "Mofizul Islam",
+        "email": "mofizul21@gmail.com"
+    }],
+    "require": {
+
+    },
+    "psr-4": {
+        "App\\": "app/"
+    }
+}
