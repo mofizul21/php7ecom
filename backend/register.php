@@ -1,8 +1,10 @@
 <?php
+
+use Mpdf\Mpdf;
+
 session_start();
-
 require_once '../app/Database.php';
-
+require_once '../vendor/autoload.php';
 $messages = [];
 
 if (isset($_POST['register'])) {
@@ -19,6 +21,40 @@ if (isset($_POST['register'])) {
     ]);
 
     if ($result) {
+        // Generate PDF
+        $mpdf = new \Mpdf\Mpdf();
+
+        ob_start();
+        echo "<h1>Hi {$username}, your account has been creared</h1>";
+        echo "<p>Email: {$email}</p>";
+        echo "<p>Mobile Number: {$mobile_number}</p>";
+        echo "<p>Thanks to join our family.</p>";
+        $html = ob_get_contents();
+        ob_end_clean();
+
+        $mpdf->WriteHTML(utf8_encode($html));
+        $content = $mpdf->Output('', 'S');
+
+        $attachment = new Swift_Attachment($content, $username . '.pdf', 'application/pdf');
+
+        // Create the Transport
+        $transport = (new Swift_SmtpTransport('smtp.mailtrap.io', 2525))
+            ->setUsername('3a8cbc3e9c2e53')
+            ->setPassword('ea6eac7ed290c8');
+
+        // Create the Mailer using your created Transport
+        $mailer = new Swift_Mailer($transport);
+
+        // Create a message
+        $message = (new Swift_Message('Registration successful'))
+            ->setFrom(['no-reply@mofizul.com' => 'PHP7Ecom'])
+            ->setTo([$email => $username])
+            ->setBody('Hi, you account has been created. Please visit the following link to login.')
+            ->attach($attachment);
+
+        // Send the message
+        $result = $mailer->send($message);
+
         $messages['success'] = "Data inserted successfully";
     }
 }

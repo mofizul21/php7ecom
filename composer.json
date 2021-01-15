@@ -8,7 +8,8 @@
         "email": "mofizul21@gmail.com"
     }],
     "require": {
-
+        "swiftmailer/swiftmailer": "^6.0",
+        "mpdf/mpdf": "^8.0"
     },
     "psr-4": {
         "App\\": "app/"

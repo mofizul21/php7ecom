@@ -23,7 +23,7 @@ if (isset($_POST['login'])) {
             $_SESSION['logged_in'] = true;
             $messages['success'] = "Logged in successfully";
 
-            header('Location: dashboard.php');
+            header('Location: dashboard/dashboard.php');
         }else{
             $messages['warning'] = "Wrong password";
         }
